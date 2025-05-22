@@ -1,0 +1,31 @@
+# Core backend
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+
+# Data handling
+pandas
+numpy
+pyreadstat
+
+# Machine Learning
+scikit-learn
+
+# Visualización
+matplotlib
+seaborn
+
+# Geoespacial
+geopandas
+shapely
+fiona
+pyproj
+rtree  # Para análisis espacial (espacial joins, etc.)
+
+# Análisis y depuración
+jupyter
+ipykernel
+
+# Validación (para FastAPI)
+pydantic
