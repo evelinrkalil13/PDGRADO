@@ -8,6 +8,7 @@ python-multipart
 pandas
 numpy
 pyreadstat
+pyarrow
 
 # Machine Learning
 scikit-learn

@@ -31,7 +31,7 @@ edad_map = {
 df['edad_ordinal'] = df['edad'].map(edad_map)
 
 # --- 3. Definir columnas ---
-numeric_cols = ['edad_ordinal', 'imc', 'totalComidasDia', 'puntaje']
+numeric_cols = ['edad_ordinal', 'imc', 'gastoComidasDia', 'puntaje_ia']
 categorical_cols = ['sexo', 'nivel_educativo', 'estado_imc', 'estrato', 'inseguridad']
 
 df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
