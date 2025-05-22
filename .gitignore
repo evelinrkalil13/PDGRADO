@@ -8,3 +8,5 @@ __pycache__/
 *.log
 *.tmp
 Thumbs.db
+*.csv
+*.png

@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 
 # --- 1. Cargar métricas y preprocesador ---
-results_df = pd.read_csv("data/outputs/clustering_comparison.csv")
+results_df = pd.read_parquet("data/outputs/clustering_comparison.parquet")
 preprocessor = joblib.load("models/preprocessor.pkl")
 
 # --- 2. Definir columnas numéricas ---
@@ -20,14 +20,14 @@ numeric_cols = ['edad_ordinal', 'imc', 'totalComidasDia', 'puntaje_ia']
 
 # --- 3. Analizar todos los modelos ---
 for modelo in results_df['Modelo']:
-    print(f"\n Analizando modelo: {modelo}")
-    path_csv = f"data/outputs/df_cluster_{modelo}.csv"
-    
-    if not os.path.exists(path_csv):
-        print(f" Archivo no encontrado: {path_csv}")
+    print(f"\n🔍 Analizando modelo: {modelo}")
+    path_parquet = f"data/outputs/df_cluster_{modelo}.parquet"
+
+    if not os.path.exists(path_parquet):
+        print(f"❌ Archivo no encontrado: {path_parquet}")
         continue
 
-    df = pd.read_csv(path_csv)
+    df = pd.read_parquet(path_parquet)
     df[numeric_cols + ['cluster']] = df[numeric_cols + ['cluster']].apply(pd.to_numeric, errors='coerce')
     df[numeric_cols + ['cluster']] = df[numeric_cols + ['cluster']].fillna(df[numeric_cols + ['cluster']].mean())
 
@@ -83,7 +83,7 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/silhouette_plot_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f" No se pudo graficar Silhouette para {modelo}: {e}")
+        print(f"⚠️ No se pudo graficar Silhouette para {modelo}: {e}")
 
     # --- C. PCA 2D y 3D ---
     try:
@@ -113,7 +113,7 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/pca_3d_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f" Error en PCA para {modelo}: {e}")
+        print(f"⚠️ Error en PCA para {modelo}: {e}")
 
     # --- D. Heatmap de correlación ---
     try:
@@ -125,21 +125,21 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/heatmap_correlaciones_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f" No se pudo graficar heatmap para {modelo}: {e}")
+        print(f"⚠️ No se pudo graficar heatmap para {modelo}: {e}")
 
 # --- 4. Selección automática del mejor modelo ---
 filtered = results_df[(results_df['n_clusters'] >= 2) & (results_df['n_clusters'] <= 10)].dropna()
 
 if filtered.empty:
-    print("\n No se encontraron modelos con 2–10 clusters válidos.")
+    print("\n❌ No se encontraron modelos con 2–10 clusters válidos.")
 else:
     ranked = filtered.sort_values(by="Silhouette", ascending=False)
-    print("\n Ranking de modelos (clusters entre 2–10):")
+    print("\n🏆 Ranking de modelos (clusters entre 2–10):")
     print(ranked[['Modelo', 'Silhouette', 'n_clusters']].to_string(index=False))
 
     best_model = ranked.iloc[0]
-    print(f"\n Modelo recomendado: {best_model['Modelo']} "
+    print(f"\n⭐ Modelo recomendado: {best_model['Modelo']} "
           f"(Silhouette={best_model['Silhouette']:.4f}, "
           f"Clusters={int(best_model['n_clusters'])})")
 
-print("\n Análisis gráfico y selección completados.")
+print("\n✅ Análisis gráfico y selección completados.")
