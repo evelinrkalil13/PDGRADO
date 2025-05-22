@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 import os
+
 from sklearn.metrics import silhouette_samples
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
-from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 
@@ -16,15 +16,15 @@ results_df = pd.read_csv("data/outputs/clustering_comparison.csv")
 preprocessor = joblib.load("models/preprocessor.pkl")
 
 # --- 2. Definir columnas numéricas ---
-numeric_cols = ['edad_ordinal', 'imc', 'totalComidasDia', 'puntaje']
+numeric_cols = ['edad_ordinal', 'imc', 'totalComidasDia', 'puntaje_ia']
 
-# --- 3. Procesar todos los modelos encontrados ---
+# --- 3. Analizar todos los modelos ---
 for modelo in results_df['Modelo']:
-    print(f"\n📊 Analizando modelo: {modelo}")
+    print(f"\n Analizando modelo: {modelo}")
     path_csv = f"data/outputs/df_cluster_{modelo}.csv"
     
     if not os.path.exists(path_csv):
-        print(f"❌ Archivo no encontrado: {path_csv}")
+        print(f" Archivo no encontrado: {path_csv}")
         continue
 
     df = pd.read_csv(path_csv)
@@ -83,7 +83,7 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/silhouette_plot_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f"❌ No se pudo graficar Silhouette para {modelo}: {e}")
+        print(f" No se pudo graficar Silhouette para {modelo}: {e}")
 
     # --- C. PCA 2D y 3D ---
     try:
@@ -101,6 +101,7 @@ for modelo in results_df['Modelo']:
         plt.close()
 
         # 3D
+        from mpl_toolkits.mplot3d import Axes3D
         fig = plt.figure(figsize=(8,6))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter(X_pca[:,0], X_pca[:,1], X_pca[:,2], c=df['cluster'], cmap='tab10', alpha=0.6)
@@ -112,7 +113,7 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/pca_3d_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f"❌ Error en PCA para {modelo}: {e}")
+        print(f" Error en PCA para {modelo}: {e}")
 
     # --- D. Heatmap de correlación ---
     try:
@@ -124,6 +125,21 @@ for modelo in results_df['Modelo']:
         plt.savefig(f"data/outputs/heatmap_correlaciones_{modelo}.png")
         plt.close()
     except Exception as e:
-        print(f"❌ No se pudo graficar heatmap para {modelo}: {e}")
+        print(f" No se pudo graficar heatmap para {modelo}: {e}")
 
-print("\n✅ Análisis gráfico completado para todos los modelos.")
+# --- 4. Selección automática del mejor modelo ---
+filtered = results_df[(results_df['n_clusters'] >= 2) & (results_df['n_clusters'] <= 10)].dropna()
+
+if filtered.empty:
+    print("\n No se encontraron modelos con 2–10 clusters válidos.")
+else:
+    ranked = filtered.sort_values(by="Silhouette", ascending=False)
+    print("\n Ranking de modelos (clusters entre 2–10):")
+    print(ranked[['Modelo', 'Silhouette', 'n_clusters']].to_string(index=False))
+
+    best_model = ranked.iloc[0]
+    print(f"\n Modelo recomendado: {best_model['Modelo']} "
+          f"(Silhouette={best_model['Silhouette']:.4f}, "
+          f"Clusters={int(best_model['n_clusters'])})")
+
+print("\n Análisis gráfico y selección completados.")

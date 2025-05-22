@@ -1,42 +1,44 @@
 import pandas as pd
-import numpy as np
-import os
 
-# --- 1. Cargar archivo del mejor modelo ---
+# --- 1. Cargar el archivo ---
 df = pd.read_csv("data/outputs/df_cluster_KMeans.csv")
 
-# --- 2. Limpieza y asegurarse de los tipos ---
-numeric_cols = ['edad_ordinal', 'imc', 'totalComidasDia', 'puntaje']
-categorical_cols = ['sexo', 'estrato', 'nivel_educativo', 'inseguridad']
-df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
-df[categorical_cols] = df[categorical_cols].astype(str)
+# --- 2. Corrección de codificación ---
+categorical_cols = ['edad', 'sexo', 'nivel_educativo', 'estrato', 'estado_imc', 'inseguridad']
+for col in categorical_cols:
+    df[col] = df[col].astype(str).str.strip().str.encode('utf-8').str.decode('utf-8', errors='ignore').str.lower()
 
-# --- 3. Crear resumen por cluster ---
-cluster_profiles = df.groupby('cluster').agg({
-    'edad_ordinal': ['mean', 'median'],
-    'imc': ['mean'],
-    'totalComidasDia': ['mean'],
-    'puntaje': ['mean'],
-    'sexo': lambda x: (x == 'Mujeres').mean() * 100,
-    'estrato': lambda x: x.mode()[0] if not x.mode().empty else np.nan,
-    'inseguridad': lambda x: (x.str.lower().str.contains("sí|si")).mean() * 100,
-    'cluster': 'count'
-})
+# --- 3. Seleccionar un representante por cluster ---
+ejemplares = df.groupby("cluster").apply(lambda x: x.sample(1, random_state=42)).reset_index(drop=True)
 
-# Renombrar columnas
-cluster_profiles.columns = [
-    'Edad promedio', 'Edad mediana', 'IMC promedio', 'Comidas por día',
-    'Puntaje IA promedio', '% Mujeres', 'Estrato más común',
-    '% con inseguridad alimentaria', 'Tamaño'
-]
+# --- 4. Mostrar salida narrativa ---
+print("\n🧍‍♂️ Narrativas representativas por cluster\n" + "-"*60)
 
-# Agregar % del total
-cluster_profiles['% del total'] = (cluster_profiles['Tamaño'] / cluster_profiles['Tamaño'].sum()) * 100
+for i, row in ejemplares.iterrows():
+    cluster = int(row['cluster'])
+    edad = row['edad']
+    sexo = row['sexo']
+    educ = row['nivel_educativo']
+    estrato = row['estrato']
+    imc = row['imc']
+    imc_estado = row['estado_imc']
+    comidas = row['totalComidasDia']
+    puntaje = row['puntaje_ia']
+    inseguridad = "sí" if int(row['inseguridad']) == 1 else "no"
 
-# Redondear
-cluster_profiles = cluster_profiles.round(2)
+    # --- Nivel de inseguridad basado en puntaje IA ---
+    if puntaje >= 10:
+        inseg_text = "alta"
+    elif puntaje >= 5:
+        inseg_text = "moderada"
+    elif puntaje > 0:
+        inseg_text = "leve"
+    else:
+        inseg_text = "nula"
 
-# --- 4. Exportar resultados ---
-os.makedirs("data/outputs", exist_ok=True)
-cluster_profiles.to_csv("data/outputs/cluster_profiles_KMeans.csv")
-print("✅ Perfiles de clusters generados y guardados en cluster_profiles_KMeans.csv")
+    print(f"\n🔹 Cluster {cluster}")
+    print(f"Este grupo está representado por una persona de sexo {sexo}, entre {edad}, con nivel educativo '{educ}' y perteneciente al estrato '{estrato}'.")
+    print(f"Presenta un IMC de {imc:.2f} ({imc_estado}), consume aproximadamente {comidas} comidas al día y tiene un puntaje IA de {puntaje} (inseguridad {inseg_text}).")
+    print(f"Respuestas afirmativas en preguntas tipo ELCSA: {inseguridad.capitalize()}.")
+
+print("\n✅ Narrativas completadas.")
