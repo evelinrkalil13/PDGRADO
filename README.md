@@ -53,14 +53,15 @@ RecomendadorNutricional/
 │   └── MiniBatchKMeans_model.pkl
 │
 ├── data/
-│   ├── df_cluster_KMeans.parquet  # Datos etiquetados para resumen de perfiles
-│   ├── df_cluster_KMeans.parquet
-│   ├── df_cluster_DBSCAN.parquet
-│   ├── df_cluster_GaussianMixture.parquet
-│   ├── df_cluster_MiniBatchKMeans.parquet
-│   ├── df_cluster.parquet
-│   ├── df_cluster.pkl
-│   └── clustering_comparison.parquet
+│   └── outputs/
+│       ├── df_cluster_KMeans.parquet  # Datos etiquetados para resumen de perfiles
+│       ├── df_cluster_KMeans.parquet
+│       ├── df_cluster_DBSCAN.parquet
+│       ├── df_cluster_GaussianMixture.parquet
+│       ├── df_cluster_MiniBatchKMeans.parquet
+│       ├── df_cluster.parquet
+│       ├── df_cluster.pkl
+│       └── clustering_comparison.parquet
 │
 ├── template/
 │   └── index.html           # Formulario HTML estilizado
@@ -68,7 +69,7 @@ RecomendadorNutricional/
 ├── static/
 │   ├── style.css            # Estilos personalizados
 │   └── images/
-│       └── background.jpg   # Imagen de fondo
+│       ├── background.jpg   # Imagen de fondo
 │       └── icono.ico   # Imagen de fondo
 │
 └── requirements.txt         # Dependencias necesarias
