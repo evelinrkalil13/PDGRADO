@@ -25,7 +25,7 @@ ejemplares = df.groupby("cluster", group_keys=False).apply(
 ).sort_values("cluster").reset_index(drop=True)
 
 # --- 5. Mostrar resultados por cluster ---
-print("\n📋 Resumen representativo de cada cluster\n" + "-"*60)
+print("\n Resumen representativo de cada cluster\n" + "-"*60)
 
 for _, row in ejemplares.iterrows():
     cluster = int(row['cluster'])
@@ -51,7 +51,7 @@ for _, row in ejemplares.iterrows():
     else:
         inseg_desc = "nula"
 
-    print(f"\n🔹 Cluster {cluster}")
+    print(f"\n - Cluster {cluster}")
     print(f"• Edad: {edad} (ordinal = {edad_ordinal_str})")
     print(f"• Sexo: {sexo}")
     print(f"• Nivel educativo: {educ}")
@@ -62,5 +62,5 @@ for _, row in ejemplares.iterrows():
     print(f"• Inseguridad alimentaria (preguntas tipo sí/no): {inseguridad_si.capitalize()}")
 
 # --- 6. Resumen final por tamaño ---
-print("\n📊 Tamaño de cada cluster:")
+print("\n Tamaño de cada cluster:")
 print(df['cluster'].value_counts().sort_index())

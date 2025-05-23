@@ -38,7 +38,7 @@ async def clasificar_usuario(
     edad_ordinal = edad_map.get(edad.strip(), None)
 
     # --- Calcular IMC y estado ---
-    imc = peso / (altura ** 2)
+    imc = peso / ((altura/100) ** 2)
     if imc < 18.5:
         estado_imc = "delgadez"
     elif imc < 25:
@@ -82,3 +82,20 @@ async def clasificar_usuario(
         "recomendacion": resultado.get("recomendacion"),
         "usuario": usuario
     })
+
+@app.post("/predecir")
+async def predecir(request: Request):
+    data = await request.json()
+    resultados = []
+
+    for usuario in data:
+        resultado = recomendar(usuario)
+        resultados.append({
+            "cluster": resultado.get("cluster"),
+            "recomendacion": resultado.get("recomendacion")
+        })
+
+    return {
+        "message": "Predicción realizada exitosamente.",
+        "resultados": resultados
+    }

@@ -1,72 +1,217 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <title>Recomendador de Hábitos Alimentarios</title>
-  <link href="/static/style.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recomendador Nutricional</title>
+  <link rel="icon" href="/static/images/icono.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-  <div class="container">
-    <h2>Formulario de Características</h2>
-    <form action="/clasificar_usuario" method="POST">
-      <select name="edad">
-        <option>18 - 26 años</option>
-        <option>27 - 49 años</option>
-        <option>50 - 64 años</option>
-      </select>
+  <div class="main-wrapper">
+    <div class="container-fluid vh-100 d-flex">
+      <div class="row flex-grow-1">
+        <!-- Lado Izquierdo -->
+        <div class="col-lg-6 d-flex flex-column justify-content-center text-white p-5 info-panel">
+          <h1 class="display-4 fw-bold">Recomendador Nutricional</h1>
+          <p class="lead mt-3">Clasifica usuarios con base en hábitos alimentarios e identifica perfiles de riesgo para
+            guiar recomendaciones personalizadas.</p>
+        </div>
 
-      <select name="sexo">
-        <option>Mujeres</option>
-        <option>Hombres</option>
-      </select>
+        <!-- Lado Derecho -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+          <div class="glass-card p-4 w-100" style="max-width: 600px;">
+            <h4 class="text-white mb-4 text-center">Formulario de Características</h4>
+            <form action="/clasificar_usuario" method="POST" class="needs-validation" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <select class="form-select glass-input" name="edad" required>
+                    <option selected disabled value="">Edad</option>
+                    <option>18 - 26 años</option>
+                    <option>27 - 49 años</option>
+                    <option>50 - 64 años</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una edad.</div>
+                </div>
 
-      <select name="nivel_educativo">
-        <option>menos de primaria completa (0-4 años)</option>
-        <option>primaria completa o secundaria incompleta (5-10 años)</option>
-        <option>entre secundaria completa y superior incompleta (11-15 años)</option>
-        <option>educación superior completa (16 años o más)</option>
-      </select>
+                <div class="col-md-6">
+                  <select class="form-select glass-input" name="sexo" required>
+                    <option selected disabled value="">Sexo</option>
+                    <option>Mujeres</option>
+                    <option>Hombres</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione el sexo.</div>
+                </div>
 
-      <select name="estrato">
-        <option>primer cuartil</option>
-        <option>segundo cuartil</option>
-        <option>tercer cuartil</option>
-        <option>cuarto cuartil</option>
-      </select>
+                <div class="col-md-12">
+                  <select class="form-select glass-input" name="nivel_educativo" required>
+                    <option selected disabled value="">Nivel educativo</option>
+                    <option>menos de primaria completa (0-4 años)</option>
+                    <option>primaria completa o secundaria incompleta (5-10 años)</option>
+                    <option>entre secundaria completa y superior incompleta (11-15 años)</option>
+                    <option>superior completa (16+ años)</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione el nivel educativo.</div>
+                </div>
 
-      <input type="number" step="0.1" name="peso" placeholder="Peso (kg)" required>
-      <input type="number" step="0.01" name="altura" placeholder="Altura (m)" required>
-      <input type="number" step="0.01" name="totalComidasDia" placeholder="Comidas/día" required>
+                <div class="col-md-6">
+                  <select class="form-select glass-input" name="estrato" required>
+                    <option selected disabled value="">Estrato</option>
+                    <option>primer cuartil</option>
+                    <option>segundo cuartil</option>
+                    <option>tercer cuartil</option>
+                    <option>cuarto cuartil</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione el estrato socioeconómico.</div>
+                </div>
 
-      <label>¿Reduciste porciones por falta de comida?</label>
-      <select name="sa10_1">
-        <option value="1">Sí</option>
-        <option value="0">No</option>
-      </select>
+                <div class="col-md-6">
+                  <input class="form-control" type="number" step="any" name="totalComidasDia"
+                    placeholder="Total comidas al día" required>
+                  <div class="invalid-feedback">Ingrese el número de comidas.</div>
+                </div>
 
-      <label>¿Pasaste hambre pero no comiste por falta de dinero?</label>
-      <select name="sa11_1">
-        <option value="1">Sí</option>
-        <option value="0">No</option>
-      </select>
+                <div class="col-md-6">
+                  <input class="form-control" type="number" step="any" name="peso" placeholder="Peso (kg)" required>
+                  <div class="invalid-feedback">Ingrese el peso.</div>
+                </div>
 
-      <label>¿Consumiste alimentos de menor calidad?</label>
-      <select name="menor_calidad">
-        <option value="1">Sí</option>
-        <option value="0">No</option>
-      </select>
+                <div class="col-md-6">
+                  <input class="form-control" type="number" step="any" name="altura" placeholder="Altura (cm)" required>
+                  <div class="invalid-feedback">Ingrese la altura.</div>
+                </div>
 
-      <button type="submit">Clasificar Usuario</button>
-    </form>
+                <div class="col-md-4">
+                  <label class="text-white">¿Sin alimentos por falta de dinero?</label>
+                  <select class="form-select glass-input" name="sa10_1" required>
+                    <option selected disabled value="">Selecciona</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una opción.</div>
+                </div>
 
-    {% if cluster is defined %}
-    <div class="resultado">
-      <h3>Usuario asignado al cluster {{ cluster }}</h3>
-      <pre>{{ usuario }}</pre>
-      <h4>Recomendación:</h4>
-      <p>{{ recomendacion }}</p>
+                <div class="col-md-4">
+                  <label class="text-white">¿Dejó de comer todo un día?</label>
+                  <select class="form-select glass-input" name="sa11_1" required>
+                    <option selected disabled value="">Selecciona</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una opción.</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="text-white">¿Alimentos de menor calidad?</label>
+                  <select class="form-select glass-input" name="menor_calidad" required>
+                    <option selected disabled value="">Selecciona</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una opción.</div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 mt-4">Clasificar Usuario</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    {% endif %}
   </div>
+
+  <!-- Modal de resultado -->
+  <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resultadoModalLabel">Resultado de Clasificación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          {% if cluster is defined %}
+          <p><strong>Cluster asignado:</strong> {{ cluster }}</p>
+          <p><strong>Recomendación:</strong> {{ recomendacion }}</p>
+          <!-- <pre>{{ perfil }}</pre> -->
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Activar validaciones -->
+  <script>
+    (() => {
+      'use strict'
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
+
+  {% if cluster is defined %}
+  <script>
+    window.onload = function () {
+      const modal = new bootstrap.Modal(document.getElementById('resultadoModal'));
+      modal.show();
+    }
+  </script>
+  {% endif %}
+
+  <script>
+  (() => {
+    'use strict';
+
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+
+        // Validaciones personalizadas
+        const peso = parseFloat(form.querySelector('[name="peso"]').value);
+        const altura = parseFloat(form.querySelector('[name="altura"]').value);
+        const comidas = parseFloat(form.querySelector('[name="totalComidasDia"]').value);
+
+        let errores = [];
+
+        if (peso < 20 || peso > 250) {
+          errores.push("El peso debe estar entre 20kg y 250kg.");
+        }
+        if (altura < 120 || altura > 250) {
+          errores.push("La altura debe estar entre 120 cm y 250 cm.");
+        }
+        if (comidas < 1 || comidas > 8) {
+          errores.push("Las comidas por día deben estar entre 1 y 8.");
+        }
+
+        if (!form.checkValidity() || errores.length > 0) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (errores.length > 0) {
+            alert(errores.join("\n"));
+          }
+        }
+
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+</script>
+
+
 </body>
+
 </html>

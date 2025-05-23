@@ -63,7 +63,7 @@ df_cluster.to_parquet("data/outputs/df_cluster.parquet", index=False)
 df_cluster.to_pickle("data/outputs/df_cluster.pkl")
 
 # --- 10. Diagnóstico de totalComidasDia ---
-print("\n🔍 totalComidasDia: valores mínimos y máximos")
+print("\n totalComidasDia: valores mínimos y máximos")
 print(df_cluster['totalComidasDia'].sort_values().unique()[:10])
 print(df_cluster['totalComidasDia'].sort_values(ascending=False).unique()[:10])
 

@@ -1,0 +1,188 @@
+/* ==== Reset & Base ==== */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('/static/images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* ==== Layout ==== */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ==== Glassmorphism Card ==== */
+.glass-card,
+.modal-content.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  max-width: 900px;
+  width: 100%;
+  animation: fadeIn 0.8s ease-out;
+  color: #fff;
+}
+
+.modal-content.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* ==== Typography ==== */
+h1, h2, h4, label, .form-label {
+  color: #fff;
+}
+
+/* ==== Buttons ==== */
+.btn-primary {
+  background-color: #ffffff;
+  border: none;
+  color: #333;
+}
+
+.btn-primary:hover {
+  background-color: #4f4bc1;
+}
+
+.btn-close-white {
+  filter: invert(1);
+}
+
+/* ==== Form Elements ==== */
+input.form-control,
+select.form-select,
+textarea,
+input,
+select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+}
+
+/* Placeholder */
+::placeholder,
+input::placeholder,
+textarea::placeholder,
+select::placeholder,
+.glass-card input::placeholder,
+.glass-card select::placeholder,
+.glass-card textarea::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+}
+
+/* Placeholder Compatibility */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Selection */
+::selection {
+  background: rgba(108, 99, 255, 0.4);
+  color: #fff;
+}
+
+/* Dropdown Options */
+select option {
+  color: #000;
+  background: #fff;
+}
+
+/* Custom Select Styles */
+select.form-select.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+select.form-select.glass-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Remove Number Input Arrows */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ==== Animations ==== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Estilo del texto mientras se escribe */
+.glass-card input,
+.glass-card select,
+.glass-card textarea {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Placeholder */
+.glass-card input::placeholder,
+.glass-card select::placeholder,
+.glass-card textarea::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+}
+
+/* Asegura que el texto dentro del input siga blanco al hacer focus */
+.glass-card input:focus,
+.glass-card select:focus,
+.glass-card textarea:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+}

@@ -59,7 +59,7 @@ os.makedirs("data/outputs", exist_ok=True)
 
 # --- 6. Entrenar y evaluar modelos ---
 for name, model in models.items():
-    print(f"\n🔍 Evaluando modelo: {name}")
+    print(f"\n Evaluando modelo: {name}")
     try:
         if name == "GaussianMixture":
             clusters = model.fit_predict(X)
@@ -69,7 +69,7 @@ for name, model in models.items():
 
         valid_mask = clusters != -1
         if np.sum(valid_mask) < 2:
-            print(f"⚠️ {name} no generó clusters válidos.")
+            print(f" {name} no generó clusters válidos.")
             continue
 
         sil = silhouette_score(X[valid_mask], clusters[valid_mask])
@@ -89,17 +89,17 @@ for name, model in models.items():
         df_result.to_parquet(f"data/outputs/df_cluster_{name}.parquet", index=False)
         joblib.dump(model, f"models/{name}_model.pkl")
 
-        print(f"📁 Etiquetas guardadas en Parquet: df_cluster_{name}.parquet")
-        print(f"📦 Modelo guardado en: models/{name}_model.pkl")
+        print(f" Etiquetas guardadas en Parquet: df_cluster_{name}.parquet")
+        print(f" Modelo guardado en: models/{name}_model.pkl")
 
     except Exception as e:
-        print(f"❌ Error con {name}: {e}")
+        print(f" Error con {name}: {e}")
 
 # --- 7. Guardar métricas comparativas ---
 results_df = pd.DataFrame(results)
 results_df.to_parquet("data/outputs/clustering_comparison.parquet", index=False)
-print("\n✅ Métricas guardadas en clustering_comparison.parquet")
+print("\n Métricas guardadas en clustering_comparison.parquet")
 
 # --- 8. Guardar preprocesador ---
 joblib.dump(preprocessor, "models/preprocessor.pkl")
-print("📦 Preprocesador guardado en: models/preprocessor.pkl")
+print(" Preprocesador guardado en: models/preprocessor.pkl")
