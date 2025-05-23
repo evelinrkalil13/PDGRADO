@@ -38,23 +38,22 @@ La aplicación emplea un modelo de Machine Learning previamente entrenado (KMean
 ```
 RecomendadorNutricional/
 │
-├── main.py                  # Aplicación principal de FastAPI
-├── recommender.py           # Lógica de predicción y recomendaciones
-├── preprocess_data.py       # Preprocesamiento de los datos
-├── model_builder.py         # Constructor de modelos
-├── model_analisis.py        # Análisis de los modelos
-├── cluster_profiles.py      # Análisis de los clusters
+├── main.py
+├── recommender.py
+├── preprocess_data.py
+├── model_builder.py
+├── model_analisis.py
+├── cluster_profiles.py
 │
 ├── models/
-│   ├── KMeans_model.pkl     # Modelo de clustering entrenado
-│   ├── preprocessor.pkl     # Pipeline de preprocesamiento
+│   ├── KMeans_model.pkl
+│   ├── preprocessor.pkl
 │   ├── DBSCAN_model.pkl
 │   ├── GaussianMixture_model.pkl
 │   └── MiniBatchKMeans_model.pkl
 │
 ├── data/
 │   └── outputs/
-│       ├── df_cluster_KMeans.parquet  # Datos etiquetados para resumen de perfiles
 │       ├── df_cluster_KMeans.parquet
 │       ├── df_cluster_DBSCAN.parquet
 │       ├── df_cluster_GaussianMixture.parquet
@@ -64,67 +63,65 @@ RecomendadorNutricional/
 │       └── clustering_comparison.parquet
 │
 ├── template/
-│   └── index.html           # Formulario HTML estilizado
+│   └── index.html
 │
 ├── static/
-│   ├── style.css            # Estilos personalizados
+│   ├── style.css
 │   └── images/
-│       ├── background.jpg   # Imagen de fondo
-│       └── icono.ico   # Imagen de fondo
+│       ├── background.jpg
+│       └── icono.ico
 │
-└── requirements.txt         # Dependencias necesarias
+└── requirements.txt
 ```
 
 ---
 
 ## Cómo ejecutar el proyecto localmente
 
-1. **Clonar el repositorio**  
+1. **Clonar el repositorio**
 ```bash
 git clone https://github.com/tu_usuario/recomendador-nutricional.git
 cd recomendador-nutricional
 ```
 
-2. **Crear entorno virtual**  
+2. **Crear entorno virtual**
 ```bash
 python -m venv .venv
 ```
 
-3. **Activar entorno virtual**  
-- En Windows:  
+3. **Activar entorno virtual**
+- En Windows:
 ```bash
 .venv\Scripts\activate
 ```
-- En macOS/Linux:  
+- En macOS/Linux:
 ```bash
 source .venv/bin/activate
 ```
 
-4. **Instalar dependencias**  
+4. **Instalar dependencias**
 ```bash
 pip install -r requirements.txt
 ```
 
-5. **Lanzar aplicación local**  
+5. **Lanzar aplicación local**
 ```bash
 uvicorn main:app --reload
 ```
 
-6. **Acceder desde el navegador**  
+6. **Acceder desde el navegador**
 [http://localhost:8000](http://localhost:8000)
 
 ---
 
 ## Uso del endpoint en Thunder Client / Postman
 
-Además de la interfaz visual, la aplicación expone un endpoint para integración con herramientas externas:
-
 ### Endpoint disponible
 ```
 POST http://localhost:8000/predecir
 ```
 
-### JSON de entrada (lista de usuarios)
+### JSON de entrada
 
 ```json
 [
@@ -159,15 +156,50 @@ POST http://localhost:8000/predecir
 
 ---
 
-## Consideraciones
+## Informe Final del Proyecto
 
-- Todos los campos son obligatorios.
-- La **altura debe estar en centímetros** (ej. 160).
-- Las respuestas tipo ELCSA (`sa10_1`, `sa11_1`, `menor_calidad`) deben ser `0` o `1`.
-- La API devolverá un error si falta algún campo o el tipo de dato es incorrecto.
+### Portada
+**Título:** Perfiles de Inseguridad Alimentaria para Recomendaciones Nutricionales 
+**Curso:** Optativa II 
+**Fecha:** 2025  
+**Integrantes:** Evelyn Rendón Kalil
+
+### Introducción
+El proyecto aborda el problema de clasificar usuarios según características alimentarias y sociodemográficas, identificando patrones de riesgo y proponiendo recomendaciones nutricionales automatizadas.  
+**Objetivo:** Desarrollar una herramienta de ayuda basada en clustering.  
+**Resumen:** Aplicación FastAPI con modelo ML, interfaz visual y endpoint funcional.
+
+### Desarrollo del Modelo ML
+- **Datos:** Provienen de encuesta nutricional ENSIN y respuestas tipo ELCSA.
+- **Preprocesamiento:** Limpieza, codificación, escalamiento.
+- **Entrenamiento:** KMeans,MiniBatchKMeans, DBSCAN, GaussianMixture.
+- **Evaluación:** Elbow method, Silhouette Score, Heatmap, PCA, análisis visual.
+- **Resultado final:** Se seleccionó KMeans por rendimiento y segmentación clara.
+
+### Desarrollo de la API (FastAPI)
+- Endpoint `/clasificar_usuario`: procesa formulario.
+- Endpoint `/predecir`: consume JSON y devuelve cluster + recomendación.
+- Uso de Joblib para cargar modelos y transformadores.
+
+### Desarrollo de la GUI
+- HTML con Jinja2 y Bootstrap.
+- Glassmorphism moderno y responsivo.
+- Validación integrada.
+- Popup con resultados.
+
+### Arquitectura del Sistema
+FastAPI ↔ Modelo ML + Preprocesamiento  
+        ↕  
+HTML Formulario ↔ Recomendación
+
+### Discusión
+- **Desafíos:** limpieza de datos, validación, adaptación de formularios.
+- **Limitaciones:** modelo no adaptativo en tiempo real.
+- **Ética:** tratamiento responsable de datos sensibles.
+- **Mejoras:** sistema de autenticación, base de datos.
 
 ---
 
 ## Créditos
 
-Este proyecto fue desarrollado como parte de un trabajo académico sobre hábitos alimentarios y perfilamiento basado en datos, en el marco de estudios en **Analítica y Machine Learning**.
+Este proyecto fue desarrollado como parte de un trabajo académico para el curso de OPTATIVA II.
